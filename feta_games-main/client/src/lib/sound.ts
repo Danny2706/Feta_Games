@@ -1,47 +1,47 @@
-let gameplayAudio: HTMLAudioElement | null = null;
-let isMuted = false;
+// let gameplayAudio: HTMLAudioElement | null = null;
+// let isMuted = false;
 
-export const toggleMute = () => {
-  isMuted = !isMuted;
+// export const toggleMute = () => {
+//   isMuted = !isMuted;
 
-  if (gameplayAudio) {
-    gameplayAudio.muted = isMuted;
-  }
+//   if (gameplayAudio) {
+//     gameplayAudio.muted = isMuted;
+//   }
 
-  return isMuted;
-};
+//   return isMuted;
+// };
 
-export const getMuteState = () => isMuted;
+// export const getMuteState = () => isMuted;
 
-export const playGameplaySound = () => {
-  if (isMuted) return;
+// export const playGameplaySound = () => {
+//   if (isMuted) return;
 
-  if (!gameplayAudio) {
-    gameplayAudio = new Audio("/sounds/gameplay.mp3");
-    gameplayAudio.volume = 0.12;
+//   if (!gameplayAudio) {
+//     gameplayAudio = new Audio("/sounds/gameplay.mp3");
+//     gameplayAudio.volume = 0.12;
 
-    const loopStart = 5;
-    const loopEnd = 15;
+//     const loopStart = 5;
+//     const loopEnd = 15;
 
-    gameplayAudio.currentTime = loopStart;
+//     gameplayAudio.currentTime = loopStart;
 
-    gameplayAudio.addEventListener("timeupdate", () => {
-      if (!gameplayAudio) return;
+//     gameplayAudio.addEventListener("timeupdate", () => {
+//       if (!gameplayAudio) return;
 
-      if (gameplayAudio.currentTime >= loopEnd) {
-        gameplayAudio.currentTime = loopStart;
-        gameplayAudio.play();
-      }
-    });
-  }
+//       if (gameplayAudio.currentTime >= loopEnd) {
+//         gameplayAudio.currentTime = loopStart;
+//         gameplayAudio.play();
+//       }
+//     });
+//   }
 
-  gameplayAudio.muted = isMuted;
-  gameplayAudio.play().catch(() => {});
-};
+//   gameplayAudio.muted = isMuted;
+//   gameplayAudio.play().catch(() => {});
+// };
 
-export const stopGameplaySound = () => {
-  if (gameplayAudio) {
-    gameplayAudio.pause();
-    gameplayAudio.currentTime = 0;
-  }
-};
+// export const stopGameplaySound = () => {
+//   if (gameplayAudio) {
+//     gameplayAudio.pause();
+//     gameplayAudio.currentTime = 0;
+//   }
+// };
