@@ -1,214 +1,214 @@
-import { gettransaction, varifytransaction } from "@/api/wallet"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
-import { useParams } from "react-router-dom"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Skeleton } from "@/components/ui/skeleton"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
-import { toast } from "react-toastify"
-import { useState } from "react"
-import { Copy } from "lucide-react";
-export default function Deposit() {
-    const { trxno } = useParams()
-    const [transactionUrl, setTransactionUrl] = useState("")
-    const [copied, setCopied] = useState(false);
+// import { gettransaction, varifytransaction } from "@/api/wallet"
+// import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+// import { useParams } from "react-router-dom"
+// import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+// import { Badge } from "@/components/ui/badge"
+// import { Skeleton } from "@/components/ui/skeleton"
+// import { Input } from "@/components/ui/input"
+// import { Button } from "@/components/ui/button"
+// import { toast } from "react-toastify"
+// import { useState } from "react"
+// import { Copy } from "lucide-react";
+// export default function Deposit() {
+//     const { trxno } = useParams()
+//     const [transactionUrl, setTransactionUrl] = useState("")
+//     const [copied, setCopied] = useState(false);
 
-    const handleCopy = async () => {
-        const text = tx.payment_method?.account_number || "";
-        await navigator.clipboard.writeText(text);
-        setCopied(true);
-        setTimeout(() => setCopied(false), 1500);
-    };
-    const { data, isLoading, error } = useQuery({
-        queryFn: () => gettransaction({ trxno }),
-        queryKey: ["gettransaction", trxno],
-    })
-    const queryclient = useQueryClient()
-    const { mutate, isPending } = useMutation({
-        mutationFn: varifytransaction,
-        mutationKey: ["varifytransaction"],
-        onSuccess: (data) => {
-            toast.success(data.message)
-            queryclient.invalidateQueries({ queryKey: ["gettransaction"] })
-        },
-        onError: (error) => {
-            toast.error(error.message)
-        }
-    })
+//     const handleCopy = async () => {
+//         const text = tx.payment_method?.account_number || "";
+//         await navigator.clipboard.writeText(text);
+//         setCopied(true);
+//         setTimeout(() => setCopied(false), 1500);
+//     };
+//     const { data, isLoading, error } = useQuery({
+//         queryFn: () => gettransaction({ trxno }),
+//         queryKey: ["gettransaction", trxno],
+//     })
+//     const queryclient = useQueryClient()
+//     const { mutate, isPending } = useMutation({
+//         mutationFn: varifytransaction,
+//         mutationKey: ["varifytransaction"],
+//         onSuccess: (data) => {
+//             toast.success(data.message)
+//             queryclient.invalidateQueries({ queryKey: ["gettransaction"] })
+//         },
+//         onError: (error) => {
+//             toast.error(error.message)
+//         }
+//     })
 
-    const tx = data?.transaction
+//     const tx = data?.transaction
 
-    return (
-        <div className="p-3 space-y-3">
+//     return (
+//         <div className="p-3 space-y-3">
 
-            {/* Header */}
-            <div className="text-center">
-                <h1 className="text-sm font-semibold">Deposit</h1>
-            </div>
+//             {/* Header */}
+//             <div className="text-center">
+//                 <h1 className="text-sm font-semibold">Deposit</h1>
+//             </div>
 
-            {/* Loading */}
-            {isLoading && (
-                <Card>
-                    <CardContent className="p-3 space-y-2">
-                        <Skeleton className="h-4 w-1/2" />
-                        <Skeleton className="h-4 w-2/3" />
-                        <Skeleton className="h-4 w-1/3" />
-                    </CardContent>
-                </Card>
-            )}
+//             {/* Loading */}
+//             {isLoading && (
+//                 <Card>
+//                     <CardContent className="p-3 space-y-2">
+//                         <Skeleton className="h-4 w-1/2" />
+//                         <Skeleton className="h-4 w-2/3" />
+//                         <Skeleton className="h-4 w-1/3" />
+//                     </CardContent>
+//                 </Card>
+//             )}
 
-            {/* Error */}
-            {error && (
-                <Card className="border-red-500/40">
-                    <CardContent className="p-3 text-sm text-red-500">
-                        Failed to load transaction
-                    </CardContent>
-                </Card>
-            )}
+//             {/* Error */}
+//             {error && (
+//                 <Card className="border-red-500/40">
+//                     <CardContent className="p-3 text-sm text-red-500">
+//                         Failed to load transaction
+//                     </CardContent>
+//                 </Card>
+//             )}
 
-            {/* Data */}
-            {tx && (
-                <Card className="rounded-2xl">
+//             {/* Data */}
+//             {tx && (
+//                 <Card className="rounded-2xl">
 
-                    <CardHeader className="pb-2">
-                        <CardTitle className="text-sm flex items-center justify-between">
-                            Deposit Status
+//                     <CardHeader className="pb-2">
+//                         <CardTitle className="text-sm flex items-center justify-between">
+//                             Deposit Status
 
-                            <Badge
-                                className={
-                                    tx.status === "pending"
-                                        ? "bg-yellow-500/20 text-yellow-600"
-                                        : tx.status === "completed"
-                                            ? "bg-green-500/20 text-green-600"
-                                            : "bg-red-500/20 text-red-600"
-                                }
-                            >
-                                {tx.status}
-                            </Badge>
-                        </CardTitle>
-                    </CardHeader>
+//                             <Badge
+//                                 className={
+//                                     tx.status === "pending"
+//                                         ? "bg-yellow-500/20 text-yellow-600"
+//                                         : tx.status === "completed"
+//                                             ? "bg-green-500/20 text-green-600"
+//                                             : "bg-red-500/20 text-red-600"
+//                                 }
+//                             >
+//                                 {tx.status}
+//                             </Badge>
+//                         </CardTitle>
+//                     </CardHeader>
 
-                    <CardContent className="space-y-3 text-xs">
+//                     <CardContent className="space-y-3 text-xs">
 
-                        {/* Amount */}
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Amount</span>
-                            <span className="font-medium">{tx.amount} ETB</span>
-                        </div>
+//                         {/* Amount */}
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Amount</span>
+//                             <span className="font-medium">{tx.amount} ETB</span>
+//                         </div>
 
-                        {/* Type */}
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Type</span>
-                            <span className="capitalize">{tx.type}</span>
-                        </div>
+//                         {/* Type */}
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Type</span>
+//                             <span className="capitalize">{tx.type}</span>
+//                         </div>
 
-                        {/* Date */}
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Date</span>
-                            <span>
-                                {new Date(tx.created_at).toLocaleString()}
-                            </span>
-                        </div>
+//                         {/* Date */}
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Date</span>
+//                             <span>
+//                                 {new Date(tx.created_at).toLocaleString()}
+//                             </span>
+//                         </div>
 
-                        {/* Account */}
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Account</span>
-                            <Button
-                                variant="ghost"
-                                size="sm"
-                                onClick={handleCopy}
-                            >
-                                {copied ? "Copied!" : tx.payment_method?.account_number}
-                                <Copy className="ml-2 h-4 w-4" />
-                            </Button>
-                        </div>
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Account Holder Name</span>
-                            <span>{tx.payment_method?.account_name}</span>
-                        </div>
+//                         {/* Account */}
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Account</span>
+//                             <Button
+//                                 variant="ghost"
+//                                 size="sm"
+//                                 onClick={handleCopy}
+//                             >
+//                                 {copied ? "Copied!" : tx.payment_method?.account_number}
+//                                 <Copy className="ml-2 h-4 w-4" />
+//                             </Button>
+//                         </div>
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Account Holder Name</span>
+//                             <span>{tx.payment_method?.account_name}</span>
+//                         </div>
 
-                        {/* Payment Method */}
-                        <div className="flex justify-between">
-                            <span className="text-muted-foreground">Method</span>
-                            <span className="truncate max-w-[140px] text-right">
-                                {tx.payment_method.type}
-                            </span>
-                        </div>
+//                         {/* Payment Method */}
+//                         <div className="flex justify-between">
+//                             <span className="text-muted-foreground">Method</span>
+//                             <span className="truncate max-w-[140px] text-right">
+//                                 {tx.payment_method.type}
+//                             </span>
+//                         </div>
 
 
-                        {/* Instructions */}
-                        <Card className="border border-primary/10 bg-muted/30 rounded-xl">
-                            <CardHeader className="pb-2">
-                                <CardTitle className="text-sm">📌 How to Deposit</CardTitle>
-                            </CardHeader>
+//                         {/* Instructions */}
+//                         <Card className="border border-primary/10 bg-muted/30 rounded-xl">
+//                             <CardHeader className="pb-2">
+//                                 <CardTitle className="text-sm">📌 How to Deposit</CardTitle>
+//                             </CardHeader>
 
-                            <CardContent className="space-y-4 text-xs">
+//                             <CardContent className="space-y-4 text-xs">
 
-                                {/* Step 1 */}
-                                <div className="flex gap-2">
-                                    <span className="font-bold text-primary">1.</span>
-                                    <p>
-                                        ከላይ ባለው <span className="font-semibold">CBE አካውንት</span> ገንዘቡን ያስገቡ
-                                        <br />
-                                        <span className="text-red-500">🚨 ከ CBE Mobile banking ብቻ ይላኩ</span>
-                                        <br />
-                                        <span className="text-red-500">🚨 ከ CBE bank branch ayasgebu </span>
-                                        <br />
+//                                 {/* Step 1 */}
+//                                 <div className="flex gap-2">
+//                                     <span className="font-bold text-primary">1.</span>
+//                                     <p>
+//                                         ከላይ ባለው <span className="font-semibold">CBE አካውንት</span> ገንዘቡን ያስገቡ
+//                                         <br />
+//                                         <span className="text-red-500">🚨 ከ CBE Mobile banking ብቻ ይላኩ</span>
+//                                         <br />
+//                                         <span className="text-red-500">🚨 ከ CBE bank branch ayasgebu </span>
+//                                         <br />
 
-                                        <span className="text-red-500">🚨 የተጠየቀውን መጠን ብቻ ይላኩ</span>
-                                    </p>
-                                </div>
+//                                         <span className="text-red-500">🚨 የተጠየቀውን መጠን ብቻ ይላኩ</span>
+//                                     </p>
+//                                 </div>
 
-                                {/* Step 2 */}
-                                <div className="flex gap-2">
-                                    <span className="font-bold text-primary">2.</span>
-                                    <p>
-                                        ከላኩ በኋላ ከ <span className="font-semibold">CBE</span> የክፍያ መረጃ ያለው
-                                        <span className="font-semibold"> SMS</span> ይደርሳችኋል
-                                    </p>
-                                </div>
+//                                 {/* Step 2 */}
+//                                 <div className="flex gap-2">
+//                                     <span className="font-bold text-primary">2.</span>
+//                                     <p>
+//                                         ከላኩ በኋላ ከ <span className="font-semibold">CBE</span> የክፍያ መረጃ ያለው
+//                                         <span className="font-semibold"> SMS</span> ይደርሳችኋል
+//                                     </p>
+//                                 </div>
 
-                                {/* Step 3 */}
-                                <div className="flex gap-2">
-                                    <span className="font-bold text-primary">3.</span>
-                                    <p>
-                                        የደረሰውን SMS <span className="font-semibold">Link</span> ኮፒ በማድረግ
-                                        ከታች ባለው መስክ ውስጥ ፔስት ያድርጉ
-                                    </p>
-                                </div>
+//                                 {/* Step 3 */}
+//                                 <div className="flex gap-2">
+//                                     <span className="font-bold text-primary">3.</span>
+//                                     <p>
+//                                         የደረሰውን SMS <span className="font-semibold">Link</span> ኮፒ በማድረግ
+//                                         ከታች ባለው መስክ ውስጥ ፔስት ያድርጉ
+//                                     </p>
+//                                 </div>
 
-                                {/* Image */}
-                                <div className="rounded-lg overflow-hidden border">
-                                    <img
-                                        src="/depositinfo.png"
-                                        alt="Deposit Info"
-                                        className="w-full h-auto object-cover"
-                                    />
-                                </div>
+//                                 {/* Image */}
+//                                 <div className="rounded-lg overflow-hidden border">
+//                                     <img
+//                                         src="/depositinfo.png"
+//                                         alt="Deposit Info"
+//                                         className="w-full h-auto object-cover"
+//                                     />
+//                                 </div>
 
-                            </CardContent>
-                        </Card>
+//                             </CardContent>
+//                         </Card>
 
-                        {/* INPUT FIELD */}
-                        <div className="pt-2 space-y-2">
-                            <Input
-                                placeholder="Enter transaction Url"
-                                className="h-10 text-sm"
-                                value={transactionUrl}
-                                disabled={isPending || tx.status == "completed"} onChange={(e) => setTransactionUrl(e.target.value)}
-                            />
+//                         {/* INPUT FIELD */}
+//                         <div className="pt-2 space-y-2">
+//                             <Input
+//                                 placeholder="Enter transaction Url"
+//                                 className="h-10 text-sm"
+//                                 value={transactionUrl}
+//                                 disabled={isPending || tx.status == "completed"} onChange={(e) => setTransactionUrl(e.target.value)}
+//                             />
 
-                            <Button disabled={isPending || tx.status == "completed"}
-                                onClick={() => mutate({ trxno, transactionUrl })}
-                                className="w-full h-10 text-sm">
-                                Verify Deposit
-                            </Button>
-                        </div>
+//                             <Button disabled={isPending || tx.status == "completed"}
+//                                 onClick={() => mutate({ trxno, transactionUrl })}
+//                                 className="w-full h-10 text-sm">
+//                                 Verify Deposit
+//                             </Button>
+//                         </div>
 
-                    </CardContent>
-                </Card>
-            )}
-        </div>
-    )
-}
+//                     </CardContent>
+//                 </Card>
+//             )}
+//         </div>
+//     )
+// }
